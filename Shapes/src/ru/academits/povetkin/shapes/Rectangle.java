@@ -1,5 +1,7 @@
 package ru.academits.povetkin.shapes;
 
+import java.util.Objects;
+
 public class Rectangle implements Shape {
     private double sideLength1;
     private double sideLength2;
@@ -7,6 +9,36 @@ public class Rectangle implements Shape {
     public Rectangle(double sideLength1, double sideLength2) {
         this.sideLength1 = sideLength1;
         this.sideLength2 = sideLength2;
+    }
+
+    @Override
+    public String toString() {
+        return "Rectangle {" +
+                "sideLength1 = " + sideLength1 +
+                ", sideLength2 = " + sideLength2 +
+                ", area = " + getArea() +
+                ", perimeter = " + getPerimeter() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Rectangle rectangle = (Rectangle) o;
+
+        return Double.compare(sideLength1, rectangle.sideLength1) == 0 && Double.compare(sideLength2, rectangle.sideLength2) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sideLength1, sideLength2);
     }
 
     public double getSideLength1() {
