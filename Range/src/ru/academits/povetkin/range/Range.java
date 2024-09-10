@@ -9,6 +9,11 @@ public class Range {
         this.to = to;
     }
 
+    @Override
+    public String toString() {
+        return "from = " + getFrom() + ", to = " + getTo();
+    }
+
     public double getFrom() {
         return from;
     }
@@ -33,63 +38,51 @@ public class Range {
         return number >= from && number <= to;
     }
 
-    public Range intersection(Range secondRange) {
-        Range resultRange = new Range(0, 0);
+    public Range getIntersection(Range range) {
+        if (from <= range.from && to >= range.to) {
+            return new Range(range.from, range.to);
+        }
 
-        if (this.isInside(secondRange.from) && this.isInside(secondRange.to)) {
-            resultRange.setFrom(secondRange.from);
-            resultRange.setTo(secondRange.to);
-            return resultRange;
-        } else if (secondRange.isInside(this.from) && secondRange.isInside(this.to)) {
-            resultRange.setFrom(this.from);
-            resultRange.setTo(this.to);
-            return resultRange;
-        } else {
+        if (from >= range.from && to <= range.to) {
+            return new Range(from, to);
+        }
+
+        return null;
+    }
+
+    public Range[] getUnion(Range range) {
+        if (to < range.from) {
+            return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+        }
+
+        if (range.to < from) {
+            return new Range[]{new Range(range.from, range.to), new Range(from, to)};
+        }
+
+        if (range.to > from && range.from < from && range.to < to) {
+            return new Range[]{new Range(range.from, to)};
+        }
+
+        if (to > range.from && from < range.from && to < range.to) {
+            return new Range[]{new Range(from, range.to)};
+        }
+
+        return new Range[]{new Range(Math.min(range.from, from), Math.max(range.to, to))};
+    }
+
+    public Range[] getDifference(Range range) {
+        if (to < range.from || to > range.from && from < range.from && to < range.to) {
+            return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+        }
+
+        if (range.to < from || range.to > from && range.from < from && range.to < to) {
+            return new Range[]{new Range(range.from, range.to), new Range(from, to)};
+        }
+
+        if (getLength() == range.getLength()) {
             return null;
         }
-    }
 
-    public Range[] consolidation(Range secondRange) {
-        Range[] resultRange = {this,null};
-
-        if (this.isInside(secondRange.from) && this.isInside(secondRange.to)) {
-            resultRange[0].setFrom(this.from);
-            resultRange[0].setTo(this.to);
-            return resultRange;
-        } else if (secondRange.isInside(this.from) && secondRange.isInside(this.to)) {
-            resultRange[0].setFrom(secondRange.from);
-            resultRange[0].setTo(secondRange.to);
-            return resultRange;
-        } else if (this.isInside(secondRange.from)) {
-            resultRange[0].setFrom(this.from);
-            resultRange[0].setTo(secondRange.to);
-            return resultRange;
-        } else if (this.isInside(secondRange.to)) {
-            resultRange[0].setFrom(secondRange.from);
-            resultRange[0].setTo(this.to);
-            return resultRange;
-        } else {
-            resultRange[0] = this;
-            resultRange[1] = secondRange;
-            return resultRange;
-        }
-    }
-
-    public Range[] difference(Range secondRange) {
-        Range[] resultRange = {this,null};
-
-        if (this.isInside(secondRange.from) && this.isInside(secondRange.to)) {
-            resultRange[0].setFrom(this.from);
-            resultRange[0].setTo(this.to - secondRange.getLength());
-            return resultRange;
-        } else if (secondRange.isInside(this.from) && secondRange.isInside(this.to)) {
-            resultRange[0].setFrom(secondRange.from);
-            resultRange[0].setTo(secondRange.to - this.getLength());
-            return resultRange;
-        } else {
-            resultRange[0] = this;
-            resultRange[1] = secondRange;
-            return resultRange;
-        }
+        return new Range[]{new Range(from, to - range.getLength())};
     }
 }

@@ -2,44 +2,31 @@ package ru.academits.povetkin.range_main;
 
 import ru.academits.povetkin.range.Range;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
-        Range range1 = new Range(10, 100);
-        Range range2 = new Range(11, 20);
+        Range range1 = new Range(6, 15);
+        Range range2 = new Range(8, 12);
 
-        Range resultRange = range1.intersection(range2);
-        System.out.println("Пересечение");
-        System.out.println("Начало диапазона = " + resultRange.getFrom());
-        System.out.println("Конец диапазона = " + resultRange.getTo());
+        System.out.println(range1.isInside(10));
 
-        System.out.println("-------------------------------------------------");
+        Range intersection = range1.getIntersection(range2);
 
-        range1.setFrom(12);
-        range1.setTo(18);
+        System.out.println("Интервал-пересечение: " + intersection);
 
-        Range[] resultArrayRange = range1.consolidation(range2);
-        System.out.println("Объединение");
-        System.out.println("Начало первого диапазона = " + resultArrayRange[0].getFrom());
-        System.out.println("Конец первого диапазона = " + resultArrayRange[0].getTo());
+        range2.setFrom(12);
+        range2.setTo(20);
 
-        if (resultArrayRange[1] != null) {
-            System.out.println("Начало второго диапазона = " + resultArrayRange[1].getFrom());
-            System.out.println("Конец второго диапазона = " + resultArrayRange[1].getTo());
-        }
+        Range[] union = range1.getUnion(range2);
 
-        System.out.println("-------------------------------------------------");
+        System.out.println("Объединение: " + Arrays.toString(union));
 
-        range1.setFrom(11);
-        range1.setTo(20);
+        range2.setFrom(8);
+        range2.setTo(12);
 
-        resultArrayRange = range1.difference(range2);
-        System.out.println("Разность");
-        System.out.println("Начало первого диапазона = " + resultArrayRange[0].getFrom());
-        System.out.println("Конец первого диапазона = " + resultArrayRange[0].getTo());
+        Range[] difference = range1.getDifference(range2);
 
-        if (resultArrayRange[1] != null) {
-            System.out.println("Начало второго диапазона = " + resultArrayRange[1].getFrom());
-            System.out.println("Конец второго диапазона = " + resultArrayRange[1].getTo());
-        }
+        System.out.println("Разность: " + Arrays.toString(difference));
     }
 }
