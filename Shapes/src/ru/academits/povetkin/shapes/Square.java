@@ -1,13 +1,17 @@
 package ru.academits.povetkin.shapes;
 
-import java.util.Objects;
-
-import static java.lang.Math.pow;
-
 public class Square implements Shape {
     private double sideLength;
 
     public Square(double sideLength) {
+        this.sideLength = sideLength;
+    }
+
+    public double getSideLength() {
+        return sideLength;
+    }
+
+    public void setSideLength(double sideLength) {
         this.sideLength = sideLength;
     }
 
@@ -22,23 +26,28 @@ public class Square implements Shape {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Square square = (Square) o;
-        return Double.compare(sideLength, square.sideLength) == 0;
+        double epsilon = 1.0e-10;
+
+        return sideLength - square.sideLength <= epsilon;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(sideLength);
-    }
+        final int prime = 37;
+        int hash = 1;
 
-    public double getSideLength() {
-        return sideLength;
-    }
+        hash = prime * hash + Double.hashCode(sideLength);
 
-    public void setSideLength(double sideLength) {
-        this.sideLength = sideLength;
+        return hash;
     }
 
     @Override
@@ -58,6 +67,6 @@ public class Square implements Shape {
 
     @Override
     public double getArea() {
-        return pow(sideLength, 2);
+        return sideLength * sideLength;
     }
 }

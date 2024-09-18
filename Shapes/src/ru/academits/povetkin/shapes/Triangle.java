@@ -1,10 +1,5 @@
 package ru.academits.povetkin.shapes;
 
-import java.util.Objects;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 public class Triangle implements Shape {
     private double x1;
     private double x2;
@@ -13,42 +8,13 @@ public class Triangle implements Shape {
     private double y2;
     private double y3;
 
-    public Triangle(double x1, double x2, double x3, double y1, double y2, double y3) {
+    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
-        this.x2 = x2;
-        this.x3 = x3;
         this.y1 = y1;
+        this.x2 = x2;
         this.y2 = y2;
+        this.x3 = x3;
         this.y3 = y3;
-    }
-
-    @Override
-    public String toString() {
-        return "Triangle {" +
-                "x1 = " + x1 +
-                ", x2 = " + x2 +
-                ", x3 = " + x3 +
-                ", y1 = " + y1 +
-                ", y2 = " + y2 +
-                ", y3 = " + y3 +
-                ", area = " + getArea() +
-                ", perimeter = " + getPerimeter() +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Triangle triangle = (Triangle) o;
-        return Double.compare(x1, triangle.x1) == 0 && Double.compare(x2, triangle.x2) == 0 &&
-                Double.compare(x3, triangle.x3) == 0 && Double.compare(y1, triangle.y1) == 0 &&
-                Double.compare(y2, triangle.y2) == 0 && Double.compare(y3, triangle.y3) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x1, x2, x3, y1, y2, y3);
     }
 
     public double getX1() {
@@ -100,26 +66,77 @@ public class Triangle implements Shape {
     }
 
     @Override
+    public String toString() {
+        return "Triangle {" +
+                "x1 = " + x1 +
+                ", x2 = " + x2 +
+                ", x3 = " + x3 +
+                ", y1 = " + y1 +
+                ", y2 = " + y2 +
+                ", y3 = " + y3 +
+                ", area = " + getArea() +
+                ", perimeter = " + getPerimeter() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Triangle triangle = (Triangle) o;
+        double epsilon = 1.0e-10;
+
+        return x1 - triangle.x1 <= epsilon && x2 - triangle.x2 <= epsilon && x3 - triangle.x3 <= epsilon &&
+                y1 - triangle.y1 <= epsilon && y2 - triangle.y2 <= epsilon && y3 - triangle.y3 <= epsilon;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+
+        hash = prime * hash + Double.hashCode(x1);
+        hash = prime * hash + Double.hashCode(x2);
+        hash = prime * hash + Double.hashCode(x3);
+        hash = prime * hash + Double.hashCode(y1);
+        hash = prime * hash + Double.hashCode(y2);
+        hash = prime * hash + Double.hashCode(y3);
+
+        return hash;
+    }
+
+    @Override
     public double getWidth() {
-        double intermediateMaximumX = max(x1, x2);
-        double intermediateMinimumY = min(y1, y2);
-        return max(intermediateMaximumX, x3) - min(intermediateMinimumY, y3);
+        return Math.max(Math.max(x1, x2), x3) - Math.min(Math.min(y1, y2), y3);
     }
 
     @Override
     public double getHeight() {
-        double intermediateMaximumY = max(y1, y2);
-        double intermediateMinimumX = min(x1, x2);
-        return max(intermediateMaximumY, y3) - min(intermediateMinimumX, x3);
+        return Math.max(Math.max(y1, y2), y3) - Math.min(Math.min(x1, x2), x3);
     }
 
     @Override
     public double getArea() {
-        return 0.5 * (y2 - x2) * getHeight();
+        double sideA = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double sideB = Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2));
+        double sideC = Math.sqrt(Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
+        double semiPerimeter = getPerimeter() / 2;
+
+        return Math.sqrt(semiPerimeter * (semiPerimeter - sideA) * (semiPerimeter - sideB) * (semiPerimeter * sideC));
     }
 
     @Override
     public double getPerimeter() {
-        return (y1 - x1) + (y2 - x2) + (y3 - x3);
+        double sideA = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double sideB = Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2));
+        double sideC = Math.sqrt(Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
+
+        return sideA + sideB + sideC;
     }
 }

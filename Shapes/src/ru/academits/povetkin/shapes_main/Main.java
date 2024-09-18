@@ -1,41 +1,33 @@
 package ru.academits.povetkin.shapes_main;
 
+import ru.academits.povetkin.comparators.ShapeAreaComparator;
+import ru.academits.povetkin.comparators.ShapePerimeterComparator;
 import ru.academits.povetkin.shapes.*;
 
 import java.util.ArrayList;
 
 public class Main {
-    public static Shape getShapeMaxArea(ArrayList<Shape> shapes) {
-        AreaCompare areaCompare = new AreaCompare();
-        shapes.sort(areaCompare);
-        System.out.println(shapes);
+    public static Shape getShapeWithMaxArea(ArrayList<Shape> shapes) {
+        shapes.sort(new ShapeAreaComparator());
 
-        return shapes.get(0);
+        return shapes.get(shapes.size() - 1);
     }
 
-    public static Shape getShapeSecondMaxPerimeter(ArrayList<Shape> shapes) {
-        PerimeterCompare perimeterCompare = new PerimeterCompare();
-        shapes.sort(perimeterCompare);
-        System.out.println(shapes);
+    public static Shape getShapeWithSecondMaxPerimeter(ArrayList<Shape> shapes) {
+        shapes.sort(new ShapePerimeterComparator());
 
-        return shapes.get(1);
+        return shapes.get(shapes.size() - 2);
     }
 
     public static void main(String[] args) {
-        Circle circle = new Circle(10.5);
-        Rectangle rectangle = new Rectangle(5.5, 15.1);
-        Square square1 = new Square(13);
-        Triangle triangle = new Triangle(1.2, 2, 4.6, 3.2, 6.4, 8.7);
-        Square square2 = new Square(18.9);
-
         ArrayList<Shape> shapes = new ArrayList<>();
-        shapes.add(circle);
-        shapes.add(rectangle);
-        shapes.add(square1);
-        shapes.add(triangle);
-        shapes.add(square2);
+        shapes.add(new Circle(10.5));
+        shapes.add(new Rectangle(5.5, 15.1));
+        shapes.add(new Square(13));
+        shapes.add(new Triangle(1.2, 2, 4.6, 3.2, 6.4, 8.7));
+        shapes.add(new Square(18.9));
 
-        System.out.println(getShapeMaxArea(shapes));
-        System.out.println(getShapeSecondMaxPerimeter(shapes));
+        System.out.println(getShapeWithMaxArea(shapes));
+        System.out.println(getShapeWithSecondMaxPerimeter(shapes));
     }
 }

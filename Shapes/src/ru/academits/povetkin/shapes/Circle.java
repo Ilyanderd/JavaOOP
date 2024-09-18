@@ -1,13 +1,17 @@
 package ru.academits.povetkin.shapes;
 
-import java.util.Objects;
-
-import static java.lang.Math.pow;
-
 public class Circle implements Shape {
     private double radius;
 
     public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
         this.radius = radius;
     }
 
@@ -22,23 +26,28 @@ public class Circle implements Shape {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Circle circle = (Circle) o;
-        return Double.compare(radius, circle.radius) == 0;
+        double epsilon = 1.0e-10;
+
+        return radius - circle.radius <= epsilon;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(radius);
-    }
+        final int prime = 37;
+        int hash = 1;
 
-    public double getRadius() {
-        return radius;
-    }
+        hash = prime * hash + Double.hashCode(radius);
 
-    public void setRadius(double radius) {
-        this.radius = radius;
+        return hash;
     }
 
     @Override
@@ -53,7 +62,7 @@ public class Circle implements Shape {
 
     @Override
     public double getArea() {
-        return Math.PI * pow(radius, 2);
+        return Math.PI * (radius * radius);
     }
 
     @Override

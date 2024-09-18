@@ -1,21 +1,37 @@
 package ru.academits.povetkin.shapes;
 
-import java.util.Objects;
-
 public class Rectangle implements Shape {
-    private double sideLength1;
-    private double sideLength2;
+    private double width;
+    private double height;
 
-    public Rectangle(double sideLength1, double sideLength2) {
-        this.sideLength1 = sideLength1;
-        this.sideLength2 = sideLength2;
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    @Override
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 
     @Override
     public String toString() {
         return "Rectangle {" +
-                "sideLength1 = " + sideLength1 +
-                ", sideLength2 = " + sideLength2 +
+                "sideLength1 = " + width +
+                ", sideLength2 = " + height +
                 ", area = " + getArea() +
                 ", perimeter = " + getPerimeter() +
                 '}';
@@ -32,48 +48,29 @@ public class Rectangle implements Shape {
         }
 
         Rectangle rectangle = (Rectangle) o;
+        double epsilon = 1.0e-10;
 
-        return Double.compare(sideLength1, rectangle.sideLength1) == 0 && Double.compare(sideLength2, rectangle.sideLength2) == 0;
+        return width - rectangle.width <= epsilon && height - rectangle.height <= epsilon;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sideLength1, sideLength2);
-    }
+        final int prime = 37;
+        int hash = 1;
 
-    public double getSideLength1() {
-        return sideLength1;
-    }
+        hash = prime * hash + Double.hashCode(width);
+        hash = prime * hash + Double.hashCode(height);
 
-    public void setSideLength1(double sideLength1) {
-        this.sideLength1 = sideLength1;
-    }
-
-    public double getSideLength2() {
-        return sideLength2;
-    }
-
-    public void setSideLength2(double sideLength2) {
-        this.sideLength2 = sideLength2;
-    }
-
-    @Override
-    public double getWidth() {
-        return sideLength1;
-    }
-
-    @Override
-    public double getHeight() {
-        return sideLength2;
+        return hash;
     }
 
     @Override
     public double getArea() {
-        return sideLength1 * sideLength2;
+        return width * height;
     }
 
     @Override
     public double getPerimeter() {
-        return 2 * sideLength1 + 2 * sideLength2;
+        return 2 * (width + height);
     }
 }
