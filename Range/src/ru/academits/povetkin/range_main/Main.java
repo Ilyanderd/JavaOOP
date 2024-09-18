@@ -12,21 +12,18 @@ public class Main {
         System.out.println(range1.isInside(10));
 
         Range intersection = range1.getIntersection(range2);
-
         System.out.println("Интервал-пересечение: " + intersection);
 
         range2.setFrom(12);
         range2.setTo(20);
 
         Range[] union = range1.getUnion(range2);
-
         System.out.println("Объединение: " + Arrays.toString(union));
 
         range2.setFrom(8);
         range2.setTo(12);
 
         Range[] difference = range1.getDifference(range2);
-
         System.out.println("Разность: " + Arrays.toString(difference));
     }
 }
